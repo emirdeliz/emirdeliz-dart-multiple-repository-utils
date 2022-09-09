@@ -1,0 +1,101 @@
+{
+	"publisher": "emirdeliz",
+	"galleryBanner": {
+		"color": "#030518",
+		"theme": "dark"
+	},
+	"keywords": [
+		"dart",
+		"dart utils",
+		"dart pub get",
+		"dart clean",
+		"flutter",
+		"flutter utils",
+		"flutter pub get",
+		"flutter clean"
+	],
+	"repository": {
+		"url": "https://github.com/emirdeliz/emirdeliz-dart-utils"
+	},
+	"homepage": "https://github.com/emirdeliz/emirdeliz-dart-utils",
+	"bugs": {
+		"url": "https://github.com/emirdeliz/emirdeliz-dart-utils/issues"
+	},
+	"name": "emirdeliz-dart-utils",
+	"displayName": "emirdeliz-dart-utils",
+	"description": "A collection of utils to dart like pub get, clean, etc",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.71.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:emirdeliz-dart-utils.disposableInitialize"
+	],
+	"extensionDependencies": [
+		"Dart-Code.dart-code"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "emirdeliz-dart-utils.clean-pub-get",
+				"title": "Clean and Pub Get",
+				"description": "Run clean and then pub get for the focus project"
+			},
+			{
+				"command": "emirdeliz-dart-utils.clean-pub-get-workspace",
+				"title": "Clean and Pub Get Workspace",
+				"description": "Run clean and then pub get for each project on the root of the workspace."
+			},
+			{
+				"command": "emirdeliz-dart-utils.pull-workspace",
+				"title": "Pull Workspace",
+				"description": "Run git pull for each project on the root of the workspace."
+			}
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "explorerResourceIsFolder && resourceFilename == pubspec.yaml",
+					"command": "emirdeliz-dart-utils.clean-pub-get",
+					"group": "emirdeliz-dart-utils@1"
+				},
+				{
+					"when": "explorerResourceIsFolder && resourceFilename == pubspec.yaml",
+					"command": "emirdeliz-dart-utils.clean-pub-get-workspace",
+					"group": "emirdeliz-dart-utils@2"
+				},
+				{
+					"when": "explorerResourceIsRoot && config.git.enabled",
+					"command": "emirdeliz-dart-utils.pull-workspace",
+					"group": "emirdeliz-dart-utils@3"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "16.x",
+		"@types/vscode": "^1.71.0",
+		"@typescript-eslint/eslint-plugin": "^5.31.0",
+		"@typescript-eslint/parser": "^5.31.0",
+		"@vscode/test-electron": "^2.1.5",
+		"eslint": "^8.20.0",
+		"glob": "^8.0.3",
+		"mocha": "^10.0.0",
+		"typescript": "^4.7.4"
+	},
+	"dependencies": {}
+}
