@@ -14,6 +14,7 @@
 		"flutter pub get",
 		"flutter clean"
 	],
+	"license": "MIT",
 	"repository": {
 		"url": "https://github.com/emirdeliz/emirdeliz-dart-utils"
 	},
@@ -32,14 +33,20 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:emirdeliz-dart-utils.disposableInitialize"
+		"onCommand:emirdeliz-dart-utils.disposableInitialize",
+		"onCommand:emirdeliz-dart-utils.clean-pub-get",
+		"onCommand:emirdeliz-dart-utils.clean-pub-get-workspace",
+		"onCommand:emirdeliz-dart-utils.pull-workspace"
 	],
-	"extensionDependencies": [
-		"Dart-Code.dart-code"
-	],
+	"extensionDependencies": [],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
+			{
+				"command": "disposableInitialize",
+				"title": "Initialize",
+				"description": "Initialize extension"
+			},
 			{
 				"command": "emirdeliz-dart-utils.clean-pub-get",
 				"title": "Clean and Pub Get",
@@ -79,7 +86,7 @@
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
 		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
+		"watch": "rm -rf out && tsc -watch -p ./",
 		"pretest": "yarn run compile && yarn run lint",
 		"lint": "eslint src --ext ts",
 		"test": "node ./out/test/runTest.js"

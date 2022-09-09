@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { getPathFolderFocus, runGitCommand, runDartCommand, checkFolderHasGitConfig } from './utils';
+import { getPathFolderFocus, runGitCommand, runDartCommand } from './utils';
 
 const SCRIPTS_PATH = 'scripts';
 const SCRIPT_MAKE_PUB_GET_PATH = `${SCRIPTS_PATH}/make-clean-pub-get.sh`;
@@ -10,11 +10,13 @@ const SCRIPT_MAKE_PULL_WORKSPACE_PATH = `${SCRIPTS_PATH}/make-clean-pub-get-work
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
+	// Use the console to output diagnostic information (console.debug) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log(
+	console.debug(
 		'Congratulations, your extension "emirdeliz-dart-utils" is now active!'
 	);
+
+	// https://github.com/Microsoft/vscode/issues/3553
 
 	const disposableInitialize = vscode.commands.registerCommand(
 		'emirdeliz-dart-utils.initialize',
@@ -47,9 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
 			);
 
 			const folderPath = await getPathFolderFocus();
-			await runDartCommand(
-				`cd ${folderPath} && ${SCRIPT_MAKE_PUB_GET_PATH}`
-			);
+			await runDartCommand(`cd ${folderPath} && ${SCRIPT_MAKE_PUB_GET_PATH}`);
 		}
 	);
 
@@ -60,6 +60,10 @@ export function activate(context: vscode.ExtensionContext) {
 				`Aloha! Let's go to run clean and pub get each project on the root of the workspace 🤘...`
 			);
 
+			// const activeWorkspaceFolder = vscode.workspace.getWorkspaceFolder(
+			// 	vscode.window.activeNotebookEditor?.notebook.uri
+			// 	// .activeTextEditor.document.uri
+			// );
 			const workspaceFolders = vscode.workspace.workspaceFolders;
 			for (const folder in workspaceFolders) {
 				await runDartCommand(`cd ${folder} && ${SCRIPT_MAKE_PUB_GET_PATH}`);
@@ -74,18 +78,17 @@ export function activate(context: vscode.ExtensionContext) {
 				`Aloha! Let's go to run git pull for each project on the root of the workspace.🤘...`
 			);
 
-			console.log('HALAMMMMMMM');
+			// const gitFolders = await vscode.workspace.getWorkspaceFolder();
+			// const workspaceFolders = (await vscode.workspace.fs.readDirectory()).entries();
 
-			const workspaceFolders = vscode.workspace.workspaceFolders;
+			// console.debug({
+			// 	workspaceFolders,
+			// });
 
-			console.log({
-				workspaceFolders,
-			});
-
-			for (const folder in workspaceFolders) {
-				await runGitCommand(
-					`cd ${folder} && ${SCRIPT_MAKE_PULL_WORKSPACE_PATH}`
-				);
+			for (const folder in vscode.workspace.getConfiguration()) {
+				// await runGitCommand(
+				// 	`cd ${folder} && ${SCRIPT_MAKE_PULL_WORKSPACE_PATH}`
+				// );
 			}
 		}
 	);

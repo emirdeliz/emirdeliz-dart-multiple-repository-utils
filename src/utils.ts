@@ -16,12 +16,6 @@ export async function checkFolderHasFolder(folderPath: string, folder: string) {
 }
 
 export async function checkFolderHasGitConfig(folderPath: string) {
-	console.debug(
-		'folderPath: ' +
-			folderPath +
-			' ' +
-			checkFolderHasFolder(folderPath, GIT_NAME_FOLDER_CONFIG)
-	);
 	return checkFolderHasFolder(folderPath, GIT_NAME_FOLDER_CONFIG);
 }
 
@@ -29,7 +23,7 @@ export async function runCommand(command: string) {
 	try {
 		await vscode.commands.executeCommand(command);
 	} catch (e) {
-		console.debug(
+		vscode.window.showErrorMessage(
 			`🥵 An error occurred when executing the dart command: ${e}`
 		);
 	}
