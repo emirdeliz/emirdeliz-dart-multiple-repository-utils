@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { getPathFolderFocus, runGitCommand, runDartCommand } from './utils';
+import { getPathFolderFocus, runGitCommand, runDartCommand, getAllFoldersWithGitConfig, runGitPullOnFolders } from './utils';
 
 const SCRIPTS_PATH = 'scripts';
 const SCRIPT_MAKE_PUB_GET_PATH = `${SCRIPTS_PATH}/make-clean-pub-get.sh`;
@@ -73,23 +73,31 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const disposablePullWorkspace = vscode.commands.registerCommand(
 		'emirdeliz-dart-utils.pull-workspace',
-		async () => {
+		async ({}) => {
 			vscode.window.showInformationMessage(
 				`Aloha! Let's go to run git pull for each project on the root of the workspace.🤘...`
 			);
 
-			// const gitFolders = await vscode.workspace.getWorkspaceFolder();
-			// const workspaceFolders = (await vscode.workspace.fs.readDirectory()).entries();
+			const workspaceFolders = vscode.workspace.workspaceFolders;
+			const f = workspaceFolders
+				? workspaceFolders[0]
+				: ({} as vscode.WorkspaceFolder);
 
-			// console.debug({
-			// 	workspaceFolders,
-			// });
-
-			for (const folder in vscode.workspace.getConfiguration()) {
-				// await runGitCommand(
-				// 	`cd ${folder} && ${SCRIPT_MAKE_PULL_WORKSPACE_PATH}`
-				// );
+			console.log({
+				z: f?.uri?.fsPath,
+			});
+			
+			if (!f?.uri || !f?.uri?.fsPath) {
+				return;
 			}
+
+			const foldersWithGitConfig = getAllFoldersWithGitConfig(f.uri.fsPath);
+
+			console.log({
+				foldersWithGitConfig,
+			});
+
+			// await runGitPullOnFolders(foldersWithGitConfig);
 		}
 	);
 

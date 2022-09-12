@@ -3,6 +3,20 @@ import * as vscode from 'vscode';
 
 const FLUTTER_NAME_FILE_CONFIG = 'pubspec.yaml';
 const GIT_NAME_FOLDER_CONFIG = '.git';
+const GIT_COMMANDS = {
+	pull: 'pull'
+};
+
+export function getAllFoldersInDir(folderPathBase: string) {
+	return fs.readdirSync(folderPathBase).filter(function (file) {
+		return fs.statSync(`${folderPathBase}/${file}`).isDirectory();
+	});
+}
+
+export function getAllFoldersWithGitConfig(folderPathBase: string) {
+	const foldersFromDir = getAllFoldersInDir(folderPathBase);
+	return foldersFromDir.filter((f) => checkFolderHasGitConfig(f));
+}
 
 export async function getPathFolderFocus() {
 	await vscode.commands.executeCommand('copyFilePath');
@@ -37,10 +51,13 @@ export async function runDartCommand(command: string) {
 	await runCommand(command);
 }
 
-export async function runGitCommand(command: string) {
-	const folderPath = await getPathFolderFocus();
-	if (!checkFolderHasGitConfig(folderPath)) {
-		return;
+export async function runGitCommand(command: string, workDir?: string) {
+	const commandWithMaybeWorkDir = `git ${command} ${workDir ? `-C ${workDir}` : ''}`;
+	await runCommand(commandWithMaybeWorkDir);
+}
+
+export async function runGitPullOnFolders(foldersPathWithGitConfig: Array<string>) {
+	for (const folder in foldersPathWithGitConfig) {
+		await runGitCommand(GIT_COMMANDS.pull, folder);
 	}
-	await runCommand(command);
 }
