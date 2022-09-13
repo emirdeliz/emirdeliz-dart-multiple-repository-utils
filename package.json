@@ -16,14 +16,14 @@
 	],
 	"license": "MIT",
 	"repository": {
-		"url": "https://github.com/emirdeliz/emirdeliz-dart-utils"
+		"url": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils"
 	},
-	"homepage": "https://github.com/emirdeliz/emirdeliz-dart-utils",
+	"homepage": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils",
 	"bugs": {
-		"url": "https://github.com/emirdeliz/emirdeliz-dart-utils/issues"
+		"url": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils/issues"
 	},
-	"name": "emirdeliz-dart-utils",
-	"displayName": "emirdeliz-dart-utils",
+	"name": "emirdeliz-dart-multiple-repository-utils",
+	"displayName": "emirdeliz-dart-multiple-repository-utils",
 	"description": "A collection of utils to dart like pub get, clean, etc",
 	"version": "0.0.1",
 	"engines": {
@@ -33,10 +33,10 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:emirdeliz-dart-utils.disposableInitialize",
-		"onCommand:emirdeliz-dart-utils.clean-pub-get",
-		"onCommand:emirdeliz-dart-utils.clean-pub-get-workspace",
-		"onCommand:emirdeliz-dart-utils.pull-workspace"
+		"onCommand:emirdeliz-dart-multiple-repository-utils.disposableInitialize",
+		"onCommand:emirdeliz-dart-multiple-repository-utils.clean-pub-get",
+		"onCommand:emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace",
+		"onCommand:emirdeliz-dart-multiple-repository-utils.pull-workspace"
 	],
 	"extensionDependencies": [],
 	"main": "./out/extension.js",
@@ -48,17 +48,17 @@
 				"description": "Initialize extension"
 			},
 			{
-				"command": "emirdeliz-dart-utils.clean-pub-get",
+				"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get",
 				"title": "Clean and Pub Get",
 				"description": "Run clean and then pub get for the focus project"
 			},
 			{
-				"command": "emirdeliz-dart-utils.clean-pub-get-workspace",
+				"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace",
 				"title": "Clean and Pub Get Workspace",
 				"description": "Run clean and then pub get for each project on the root of the workspace."
 			},
 			{
-				"command": "emirdeliz-dart-utils.pull-workspace",
+				"command": "emirdeliz-dart-multiple-repository-utils.pull-workspace",
 				"title": "Pull Workspace",
 				"description": "Run git pull for each project on the root of the workspace."
 			}
@@ -67,18 +67,18 @@
 			"explorer/context": [
 				{
 					"when": "explorerResourceIsFolder && resourceFilename == pubspec.yaml",
-					"command": "emirdeliz-dart-utils.clean-pub-get",
-					"group": "emirdeliz-dart-utils@1"
+					"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get",
+					"group": "emirdeliz-dart-multiple-repository-utils@1"
 				},
 				{
 					"when": "explorerResourceIsFolder && resourceFilename == pubspec.yaml",
-					"command": "emirdeliz-dart-utils.clean-pub-get-workspace",
-					"group": "emirdeliz-dart-utils@2"
+					"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace",
+					"group": "emirdeliz-dart-multiple-repository-utils@2"
 				},
 				{
 					"when": "explorerResourceIsRoot && config.git.enabled",
-					"command": "emirdeliz-dart-utils.pull-workspace",
-					"group": "emirdeliz-dart-utils@3"
+					"command": "emirdeliz-dart-multiple-repository-utils.pull-workspace",
+					"group": "emirdeliz-dart-multiple-repository-utils@3"
 				}
 			]
 		}
@@ -105,6 +105,6 @@
 		"typescript": "^4.7.4"
 	},
 	"dependencies": {
-		"emirdeliz-vs-extension-utils": "git@github.com:emirdeliz/emirdeliz-vs-extension-utils.git"
+		"emirdeliz-vs-extension-utils": "../emirdeliz-vs-extension-utils"
 	}
 }
