@@ -1,9 +1,23 @@
 {
+	"name": "emirdeliz-dart-multiple-repository-utils",
+	"displayName": "Dart utils to multi-repo approach",
+	"description": "emirdeliz-dart-multiple-repository-utils - Makes your life easier to use the dart if you work with a multi-repo approach",
 	"publisher": "emirdeliz",
-	"galleryBanner": {
-		"color": "#030518",
-		"theme": "dark"
+	"homepage": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils",
+	"bugs": {
+		"url": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils/issues",
+		"email": "emirdeliz@gmail.com"
 	},
+	"license": "MIT",
+	"main": "./dist/extension.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils.git"
+	},
+	"categories": [
+		"Programming Languages",
+		"Other"
+	],
 	"keywords": [
 		"dart",
 		"dart utils",
@@ -14,24 +28,16 @@
 		"flutter pub get",
 		"flutter clean"
 	],
-	"license": "MIT",
-	"repository": {
-		"url": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils"
+	"icon": "assets/icon.png",
+	"galleryBanner": {
+		"color": "#C80000",
+		"theme": "dark"
 	},
-	"homepage": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils",
-	"bugs": {
-		"url": "https://github.com/emirdeliz/emirdeliz-dart-multiple-repository-utils/issues"
-	},
-	"name": "emirdeliz-dart-multiple-repository-utils",
-	"displayName": "emirdeliz-dart-multiple-repository-utils",
-	"description": "A collection of utils to dart like pub get, clean, etc",
 	"version": "0.0.1",
+	"type": "commonjs",
 	"engines": {
 		"vscode": "^1.71.0"
 	},
-	"categories": [
-		"Other"
-	],
 	"activationEvents": [
 		"onCommand:emirdeliz-dart-multiple-repository-utils.disposableInitialize",
 		"onCommand:emirdeliz-dart-multiple-repository-utils.clean-pub-get",
@@ -39,7 +45,6 @@
 		"onCommand:emirdeliz-dart-multiple-repository-utils.pull-workspace"
 	],
 	"extensionDependencies": [],
-	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
@@ -84,12 +89,19 @@
 		}
 	},
 	"scripts": {
-		"vscode:prepublish": "yarn run compile",
-		"compile": "tsc -p ./",
-		"watch": "rm -rf out && tsc -watch -p ./",
-		"pretest": "yarn run compile && yarn run lint",
-		"lint": "eslint src --ext ts",
-		"test": "node ./out/test/runTest.js"
+		"vscode:prepublish": "yarn run build:dist",
+		"vscode:package": "yarn run build:dist && vsce package --yarn",
+		"vscode:publish": "yarn vscode:package && vsce publish --yarn",
+		"build:dist": "swc ./src --quiet --out-dir dist",
+		"build:dist:watch": "swc ./src --watch --quiet --out-dir dist",
+		"build:test": "swc ./src/test --out-dir dist",
+		"test": "jest --clearCache && jest ./src/test/extension.test.ts",
+		"test:watch": "jest --watch ./src/test/extension.test.ts",
+		"symbol:link:modules:pre": "rm -rf node_modules/emirdeliz-vs-extension-utils",
+		"symbol:link:modules": "yarn run symbol:link:modules:pre && ln -s ../../emirdeliz-vs-extension-utils node_modules/emirdeliz-vs-extension-utils",
+		"lint:check": "eslint src --ext .ts --fix",
+		"clear:dependencies": "rm -rf node_modules && rm -rf yarn.lock",
+		"install:dev": "yarn clear:dependencies && yarn install && yarn symbol:link:modules"
 	},
 	"devDependencies": {
 		"@types/glob": "^7.2.0",

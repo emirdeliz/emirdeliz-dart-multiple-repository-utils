@@ -1,6 +1,11 @@
-out
 dist
 node_modules
 .vscode-test/
 *.vsix
 .history
+dist
+test-resources
+ut-dir
+ut-dir.map
+
+*.DS_Store
