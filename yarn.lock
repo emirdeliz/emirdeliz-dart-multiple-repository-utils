@@ -1166,9 +1166,9 @@ camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001400:
-  version "1.0.30001439"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001439.tgz#ab7371faeb4adff4b74dad1718a6fd122e45d9cb"
-  integrity sha512-1MgUzEkoMO6gKfXflStpYgZDlFM7M/ck/bgfVCACO5vnAf0fXoNVHdWtqGU+MYca+4bL9Z5bpOVmR33cWW9G2A==
+  version "1.0.30001441"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001441.tgz#987437b266260b640a23cd18fbddb509d7f69f3e"
+  integrity sha512-OyxRR4Vof59I3yGWXws6i908EtGbMzVUi3ganaZQHmydk1iwDhRnvaPG2WaR0KcqrDFKrxVZHULT396LEPhXfg==
 
 chalk@^2.0.0:
   version "2.4.2"
@@ -1337,7 +1337,7 @@ electron-to-chromium@^1.4.251:
 
 "emirdeliz-vs-extension-utils@https://github.com/emirdeliz/emirdeliz-vs-extension-utils.git":
   version "1.0.0"
-  resolved "https://github.com/emirdeliz/emirdeliz-vs-extension-utils.git#6f90fe295b6f7f37cb11054a85fbca051fafdd4c"
+  resolved "https://github.com/emirdeliz/emirdeliz-vs-extension-utils.git#bdb04dc953e5e9ec6a3b5f89a1f86d85268ae2bb"
 
 emittery@^0.13.1:
   version "0.13.1"

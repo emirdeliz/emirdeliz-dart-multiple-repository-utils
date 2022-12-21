@@ -11,7 +11,7 @@ export async function checkFolderHasDartConfig(folderPath: string) {
 
 export async function getAllFoldersWithDartConfig() {
 	const workspaceFolders = utils.getWorkspaceFolders();
-	const ignoreFolders = utils.getSettingsByKey(
+	const ignoreFolders = utils.getSettingsByKey<Array<string>>(
 		constants.SETTINGS_KEY_BASE,
 		constants.SETTINGS_KEY_DART_IGNORE_FOLDERS
 	);
@@ -94,17 +94,17 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	const disposableFlutterCleanWorkspace = vscode.commands.registerCommand(
-		'emirdeliz-dart-multiple-repository-utils.flutter-clean-workspace',
+		'emirdeliz-dart-multiple-repository-utils.clean-workspace',
 		makeFlutterClean
 	);
 
 	const disposableFlutterPubGetWorkspace = vscode.commands.registerCommand(
-		'emirdeliz-dart-multiple-repository-utils.flutter-pub-get-workspace',
+		'emirdeliz-dart-multiple-repository-utils.pub-get-workspace',
 		makeFlutterPubGet
 	);
 
 	const disposableCleanPubGetWorkspace = vscode.commands.registerCommand(
-		'emirdeliz-dart-multiple-repository-utils.flutter-clean-pub-get-workspace',
+		'emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace',
 		makeFlutterPubGet
 	);
 

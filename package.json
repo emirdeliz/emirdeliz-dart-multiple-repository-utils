@@ -45,44 +45,54 @@
 	],
 	"extensionDependencies": [],
 	"contributes": {
+		"configuration": [
+			{
+				"id": "emirdeliz-dart-multiple-repository-utils",
+				"title": "Dart multi repo configuration",
+				"properties": {
+					"emirdeliz-dart-multiple-repository-utils.ignore-folders": {
+						"type": "array",
+						"default": [],
+						"markdownDescription": "Specifies folders to ignore when extension makes some action",
+						"scope": "window",
+						"order": 10
+					}
+				}
+			}
+		],
 		"commands": [
 			{
-				"command": "disposableInitialize",
-				"title": "Initialize",
-				"description": "Initialize extension"
-			},
-			{
-				"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get",
-				"title": "Clean and Pub Get",
-				"description": "Run clean and then pub get for the focus project"
-			},
-			{
-				"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace",
-				"title": "Clean and Pub Get Workspace",
+				"command": "emirdeliz-dart-multiple-repository-utils.clean-workspace",
+				"title": "Dart: Clean",
 				"description": "Run clean and then pub get for each project on the root of the workspace."
 			},
 			{
-				"command": "emirdeliz-dart-multiple-repository-utils.pull-workspace",
-				"title": "Pull Workspace",
-				"description": "Run git pull for each project on the root of the workspace."
+				"command": "emirdeliz-dart-multiple-repository-utils.pub-get-workspace",
+				"title": "Dart: Pub Get",
+				"description": "Run pub get for each project on the root of the workspace."
+			},
+			{
+				"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace",
+				"title": "Dart: Clean & Pub Get",
+				"description": "Run clean and then pub get for each project on the root of the workspace."
 			}
 		],
 		"menus": {
 			"explorer/context": [
 				{
-					"when": "explorerResourceIsFolder && resourceFilename == pubspec.yaml",
-					"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get",
-					"group": "emirdeliz-dart-multiple-repository-utils@1"
+					"when": "explorerResourceIsRoot",
+					"command": "emirdeliz-dart-multiple-repository-utils.clean-workspace",
+					"group": "emirdeliz-dart-multiple-repository-utils@5"
 				},
 				{
-					"when": "explorerResourceIsFolder && resourceFilename == pubspec.yaml",
+					"when": "explorerResourceIsRoot",
+					"command": "emirdeliz-dart-multiple-repository-utils.pub-get-workspace",
+					"group": "emirdeliz-dart-multiple-repository-utils@5"
+				},
+				{
+					"when": "explorerResourceIsRoot",
 					"command": "emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace",
-					"group": "emirdeliz-dart-multiple-repository-utils@2"
-				},
-				{
-					"when": "explorerResourceIsRoot && config.git.enabled",
-					"command": "emirdeliz-dart-multiple-repository-utils.pull-workspace",
-					"group": "emirdeliz-dart-multiple-repository-utils@3"
+					"group": "emirdeliz-dart-multiple-repository-utils@5"
 				}
 			]
 		}
