@@ -1,44 +1,114 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { getPathFolderFocus, runDartCommand } from 'emirdeliz-vs-extension-utils';
+import * as utils from 'emirdeliz-vs-extension-utils';
+import * as constants from './constants';
 
-const SCRIPTS_PATH = 'scripts';
-const SCRIPT_MAKE_PUB_GET_PATH = `${SCRIPTS_PATH}/make-clean-pub-get.sh`;
+export async function checkFolderHasDartConfig(folderPath: string) {
+	return await utils.checkFolderHasFolder(
+		folderPath,
+		constants.FLUTTER_NAME_FILE_CONFIG
+	);
+}
+
+export async function getAllFoldersWithDartConfig() {
+	const workspaceFolders = utils.getWorkspaceFolders();
+	const ignoreFolders = utils.getSettingsByKey(
+		constants.SETTINGS_KEY_BASE,
+		constants.SETTINGS_KEY_DART_IGNORE_FOLDERS
+	);
+
+	const workspaceFoldersWithoutIgnoreFolders = workspaceFolders.reduce(
+		function (result, folder) {
+			const isFolderToIgnore =
+				ignoreFolders && ignoreFolders.includes(folder.name);
+			return isFolderToIgnore ? result : [...result, folder];
+		},
+		[] as ReadonlyArray<vscode.WorkspaceFolder>
+	);
+
+	const workspaceFoldersResult = [] as Array<vscode.WorkspaceFolder>;
+	for (const folder of workspaceFoldersWithoutIgnoreFolders) {
+		const hasGitConfig = await checkFolderHasDartConfig(folder.uri.fsPath);
+		if (hasGitConfig) {
+			workspaceFoldersResult.push(folder);
+		}
+	}
+	return workspaceFoldersResult;
+}
+
+export function buildCommand(
+	commands: Array<constants.FLUTTER_TYPE_COMMANDS>,
+	currentFolder: vscode.WorkspaceFolder
+) {
+	const commandInitial = `cd ${currentFolder.name}`;
+	const result = commands.reduce(function (result, commandType) {
+		const command = constants.FLUTTER_COMMANDS[commandType];
+		return `${result} && ${command}`;
+	}, commandInitial);
+	return `${result} && cd..`;
+}
+
+export async function runDartCommand(
+	commands: Array<constants.FLUTTER_TYPE_COMMANDS>,
+	foldersWithDartConfig: Array<vscode.WorkspaceFolder>
+) {
+	return utils.runCommandWithProgressNotification({
+		commandType: commands.join(', '),
+		foldersToCommandRun: foldersWithDartConfig,
+		processCommand: async function (currentFolder: vscode.WorkspaceFolder) {
+			const command = buildCommand(commands, currentFolder);
+			await utils.runCommandOnVsTerminal(command);
+		},
+	});
+}
+
+export async function makeFlutterClean() {
+	const foldersWithDartConfig = await getAllFoldersWithDartConfig();
+	await runDartCommand(
+		[constants.FLUTTER_TYPE_COMMANDS.Clean],
+		foldersWithDartConfig
+	);
+}
+
+export async function makeFlutterPubGet() {
+	const foldersWithDartConfig = await getAllFoldersWithDartConfig();
+	await runDartCommand(
+		[constants.FLUTTER_TYPE_COMMANDS.PubGet],
+		foldersWithDartConfig
+	);
+}
+
+export async function makeFlutterCleanAndPubGet() {
+	const foldersWithDartConfig = await getAllFoldersWithDartConfig();
+	await runDartCommand(
+		[
+			constants.FLUTTER_TYPE_COMMANDS.Clean,
+			constants.FLUTTER_TYPE_COMMANDS.PubGet,
+		],
+		foldersWithDartConfig
+	);
+}
 
 export function activate(context: vscode.ExtensionContext) {
 	console.debug(
-		'Congratulations, your extension "emirdeliz-dart-multiple-repository-utils" is now active!'
+		`Congratulations, your extension "$constants.SETTINGS_KEY_BASE}" is now active!`
 	);
 
-	const disposableCleanPubGet = vscode.commands.registerCommand(
-		'emirdeliz-dart-multiple-repository-utils.clean-pub-get',
-		async () => {
-			vscode.window.showInformationMessage(
-				`Aloha! Let's go to run clean and pub get for the project  🤘...`
-			);
+	const disposableFlutterCleanWorkspace = vscode.commands.registerCommand(
+		'emirdeliz-dart-multiple-repository-utils.flutter-clean-workspace',
+		makeFlutterClean
+	);
 
-			const folderPath = await getPathFolderFocus();
-			await runDartCommand(`cd ${folderPath} && ${SCRIPT_MAKE_PUB_GET_PATH}`);
-		}
+	const disposableFlutterPubGetWorkspace = vscode.commands.registerCommand(
+		'emirdeliz-dart-multiple-repository-utils.flutter-pub-get-workspace',
+		makeFlutterPubGet
 	);
 
 	const disposableCleanPubGetWorkspace = vscode.commands.registerCommand(
-		'emirdeliz-dart-multiple-repository-utils.clean-pub-get-workspace',
-		async () => {
-			vscode.window.showInformationMessage(
-				`Aloha! Let's go to run clean and pub get each project on the root of the workspace 🤘...`
-			);
-
-			const workspaceFolders = vscode.workspace.workspaceFolders;
-			for (const folder in workspaceFolders) {
-				await runDartCommand(`cd ${folder} && ${SCRIPT_MAKE_PUB_GET_PATH}`);
-			}
-		}
+		'emirdeliz-dart-multiple-repository-utils.flutter-clean-pub-get-workspace',
+		makeFlutterPubGet
 	);
 
-	context.subscriptions.push(disposableCleanPubGet);
+	context.subscriptions.push(disposableFlutterCleanWorkspace);
+	context.subscriptions.push(disposableFlutterPubGetWorkspace);
 	context.subscriptions.push(disposableCleanPubGetWorkspace);
 }
-
-export function deactivate() {}
