@@ -27,8 +27,8 @@ export async function getAllFoldersWithDartConfig() {
 
 	const workspaceFoldersResult = [] as Array<vscode.WorkspaceFolder>;
 	for (const folder of workspaceFoldersWithoutIgnoreFolders) {
-		const hasGitConfig = await checkFolderHasDartConfig(folder.uri.fsPath);
-		if (hasGitConfig) {
+		const hasDartConfig = await checkFolderHasDartConfig(folder.uri.fsPath);
+		if (hasDartConfig) {
 			workspaceFoldersResult.push(folder);
 		}
 	}
