@@ -22,8 +22,8 @@ This extension makes your life easier to use dart if you work with a multi-repo 
 
 ```json
 {
-	"emirdeliz-dart-multiple-repository-utils": {
-		"ignore-folders": ["folder-1, folder-2, folder-3"]
-	}
+  "emirdeliz-dart-multiple-repository-utils": {
+    "ignore-folders": ["folder-1, folder-2, folder-3"]
+  }
 }
 ```
